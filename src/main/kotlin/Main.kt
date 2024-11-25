@@ -52,6 +52,9 @@ fun main() {
     checkValidStudent(student2)
     checkValidStudent(student3)
     checkValidStudent(student4)
+
+    val studentFromString = Student("Student(id=1, firstName=Ivan, lastName=Ivanov, middleName=Ivanovich, phone=+7 (123) 456-78-90, telegram=@ivanivanov, email=ivan.ivanov@example.com, git=ivanivanov)");
+    println(studentFromString.email)
 }
 fun checkValidStudent(student: Student) {
     val studentName = student.lastName
