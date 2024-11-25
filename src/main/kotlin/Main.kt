@@ -55,6 +55,8 @@ fun main() {
 
     val studentFromString = Student("Student(id=1, firstName=Ivan, lastName=Ivanov, middleName=Ivanovich, phone=+7 (123) 456-78-90, telegram=@ivanivanov, email=ivan.ivanov@example.com, git=ivanivanov)");
     println(studentFromString.email)
+
+    println(student1.getInfo())
 }
 fun checkValidStudent(student: Student) {
     val studentName = student.lastName
