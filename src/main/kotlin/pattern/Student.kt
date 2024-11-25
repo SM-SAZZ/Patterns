@@ -1,13 +1,13 @@
 package org.sazz.pattern
 
 class Student(
-    var id: Int = 0,
+    override var id: Int = 0,
     var lastName: String,
     var firstName: String,
     var middleName: String,
     var telegram: String? = null,
-    var git: String? = null
-) {
+    override var git: String? = null
+): StudentBase(id, git) {
 
     var phone: String? = null
         get() {
@@ -86,6 +86,7 @@ class Student(
         val regex =
             Regex("Student\\(id=([^,]+), firstName=([^,]+), lastName=([^,]+), middleName=([^,]+), phone=([^,]+), telegram=([^,]+), email=([^,]+), git=([^)]*)\\)")
         val matchResult = regex.find(serializedString)
+
         if (matchResult != null) {
             this.id = matchResult.groups[1]?.value?.toInt() ?: 0
             this.firstName = matchResult.groups[2]?.value ?: ""
@@ -105,6 +106,7 @@ class Student(
             if (middleName.isEmpty()) {
                 throw IllegalArgumentException("Invalid student string format: middleName is empty!")
             }
+
             if (!validate()) {
                 throw IllegalArgumentException("Invalid student string format: git or some contact is empty")
             }
@@ -122,51 +124,41 @@ class Student(
      */
     fun validate(): Boolean {
         return this.git?.isNotEmpty() ?: false &&
-        (
-            this.email?.isNotEmpty() ?: false ||
-            this.telegram?.isNotEmpty() ?: false ||
-            this.phone?.isNotEmpty() ?: false
-        )
+                (
+                        this.email?.isNotEmpty() ?: false ||
+                                this.telegram?.isNotEmpty() ?: false ||
+                                this.phone?.isNotEmpty() ?: false
+                        )
     }
 
     /**
      * Установить контакты
      */
     fun set_contacts(email: String?, telegram: String?, phone: String?) {
+
         if (email != null) {
             this.email = email;
         }
+
         if (telegram != null) {
             this.telegram = telegram;
         }
+
         if (phone != null) {
             this.phone = phone;
         }
     }
 
     /**
-     * Метод для получения краткой информации о студенте
-     */
-    fun getInfo(): String {
-        val initials = getInitials()
-        val contactInfo = getContactInfo()
-        return "$lastName $initials; $git; $contactInfo"
-    }
-
-    /**
-     * Метод для получения инициалов студента
-     */
-    private fun getInitials(): String {
-        return "${firstName.first()}. ${middleName.first()}."
-    }
-
-    /**
      * Метод для получения информации о способе связи
      */
-    private fun getContactInfo(): String {
+    override fun getContactInfo(): String {
         val telegramContact = if (telegram != null) "Telegram: $telegram;" else ""
         val phoneContact = if (phone != null) "Phone: $phone;" else ""
         val emailContact = if (email != null) "Email: $email;" else ""
+
         return listOf(telegramContact, phoneContact, emailContact).first { it.isNotEmpty() }
     }
+
+    override fun getLastNameWithInitials(): String = "$lastName ${firstName.first()}. ${middleName.first()}."
 }
