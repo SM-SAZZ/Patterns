@@ -47,4 +47,17 @@ fun main() {
     println(student4)
 
     student4.phone = "+72122233311"
+
+    checkValidStudent(student1)
+    checkValidStudent(student2)
+    checkValidStudent(student3)
+    checkValidStudent(student4)
+}
+fun checkValidStudent(student: Student) {
+    val studentName = student.lastName
+    if (student.validate()) {
+        println("Student $studentName is valid");
+    } else {
+        println("Student $studentName is not valid");
+    }
 }

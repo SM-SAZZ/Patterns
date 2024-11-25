@@ -82,6 +82,15 @@ class Student(
 
     override fun toString(): String {
         return "Student(id=$id, name='$firstName $middleName $lastName', " +
-                "phone=$phone, telegram=$telegram, email=$email, git=$git)"
+            "phone=$phone, telegram=$telegram, email=$email, git=$git)"
+    }
+
+    fun validate(): Boolean {
+        return this.git?.isNotEmpty() ?: false &&
+            (
+                this.email?.isNotEmpty() ?: false ||
+                this.telegram?.isNotEmpty() ?: false ||
+                this.phone?.isNotEmpty() ?: false
+            )
     }
 }
