@@ -85,12 +85,30 @@ class Student(
             "phone=$phone, telegram=$telegram, email=$email, git=$git)"
     }
 
+    /**
+     * Провести валидацию наличия гита и одного из контактов
+     */
     fun validate(): Boolean {
         return this.git?.isNotEmpty() ?: false &&
-            (
-                this.email?.isNotEmpty() ?: false ||
-                this.telegram?.isNotEmpty() ?: false ||
-                this.phone?.isNotEmpty() ?: false
-            )
+        (
+            this.email?.isNotEmpty() ?: false ||
+            this.telegram?.isNotEmpty() ?: false ||
+            this.phone?.isNotEmpty() ?: false
+        )
+    }
+
+    /**
+     * Установить контакты
+     */
+    fun set_contacts(email: String?, telegram: String?, phone: String?) {
+        if (email != null) {
+            this.email = email;
+        }
+        if (telegram != null) {
+            this.telegram = telegram;
+        }
+        if (phone != null) {
+            this.phone = phone;
+        }
     }
 }
