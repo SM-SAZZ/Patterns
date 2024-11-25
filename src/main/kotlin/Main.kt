@@ -1,6 +1,7 @@
-package org.sazz
+package org.korsnaike
 
 import org.sazz.pattern.Student;
+import org.sazz.pattern.Student_short;
 
 fun main() {
     val student1 = Student(
@@ -41,6 +42,7 @@ fun main() {
             "email" to "jane.doe@example.com"
         )
     )
+
     println(student1)
     println(student2)
     println(student3)
@@ -51,13 +53,30 @@ fun main() {
     checkValidStudent(student1)
     checkValidStudent(student2)
     checkValidStudent(student3)
-    checkValidStudent(student4)
 
     val studentFromString = Student("Student(id=1, firstName=Ivan, lastName=Ivanov, middleName=Ivanovich, phone=+7 (123) 456-78-90, telegram=@ivanivanov, email=ivan.ivanov@example.com, git=ivanivanov)");
     println(studentFromString.email)
+    println(studentFromString.getInfo())
 
-    println(student1.getInfo())
+    val studentForShort = Student(
+        id = 1,
+        lastName = "Иванов",
+        firstName = "Иван",
+        middleName = "Иванович",
+        telegram = "ivan123",
+        git = "ivanov-git"
+    )
+
+    // Использование первого конструктора
+    val studentShortFromObject = Student_short(studentForShort)
+    println("ID: ${studentShortFromObject.id}, Фамилия Инициалы: ${studentShortFromObject.lastNameInitials}, Git: ${studentShortFromObject.git}, Контакт: ${studentShortFromObject.contact}")
+
+    // Использование второго конструктора
+    val infoString = "Иванов И. И.; ivanov-git; Telegram: @ivan123"
+    val studentShortFromString = Student_short(2, infoString)
+    println("ID: ${studentShortFromString.id}, Фамилия Инициалы: ${studentShortFromString.lastNameInitials}, Git: ${studentShortFromString.git}, Контакт: ${studentShortFromString.contact}")
 }
+
 fun checkValidStudent(student: Student) {
     val studentName = student.lastName
     if (student.validate()) {
