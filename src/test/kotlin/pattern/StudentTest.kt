@@ -2,6 +2,7 @@ package org.sazz.pattern
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.sazz.student.Student
 
 class StudentTest {
     private lateinit var student: Student

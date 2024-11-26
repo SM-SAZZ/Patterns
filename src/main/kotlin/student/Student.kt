@@ -1,4 +1,4 @@
-package org.sazz.pattern
+package org.sazz.student
 
 import java.io.File
 import java.io.FileNotFoundException

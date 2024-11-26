@@ -1,4 +1,4 @@
-package org.sazz.pattern
+package org.sazz.student
 /**
  * Базовый класс для студентов
  */

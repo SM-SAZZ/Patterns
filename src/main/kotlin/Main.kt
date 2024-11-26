@@ -1,7 +1,6 @@
-package org.korsnaike
+package org.sazz
 
-import org.sazz.pattern.Student;
-import org.sazz.pattern.Student_short;
+import org.sazz.student.Student;
 
 fun main() {
     val student1 = Student(

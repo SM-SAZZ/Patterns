@@ -1,4 +1,4 @@
-package org.sazz.pattern
+package org.sazz.student
 
 class Student_short(
     override val id: Int,
