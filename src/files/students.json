@@ -1,0 +1,30 @@
+[
+  {
+    "firstName": "Doe",
+    "id": 1,
+    "lastName": "John",
+    "middleName": "Doe",
+    "telegram": "hpmyak"
+  },
+  {
+    "firstName": "Smith",
+    "id": 2,
+    "lastName": "Jane",
+    "middleName": "Doe",
+    "telegram": "pudge"
+  },
+  {
+    "firstName": "Johnson",
+    "id": 3,
+    "lastName": "Bob",
+    "middleName": "Doe",
+    "telegram": "sadasdasd"
+  },
+  {
+    "email": "jhon@hmail.ru",
+    "firstName": "John",
+    "id": 4,
+    "lastName": "NewJohn",
+    "middleName": "JOGN"
+  }
+]
