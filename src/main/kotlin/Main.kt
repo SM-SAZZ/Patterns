@@ -1,8 +1,9 @@
 package org.sazz
 
 import org.sazz.pattern.student.Data_list_student_short
-import org.sazz.strategy.Student_list_json
-import org.sazz.strategy.Student_list_yaml
+import org.sazz.strategy.Student_list
+import org.sazz.strategy.studentFileProcessor.StudentJsonFileProcessor
+import org.sazz.strategy.studentFileProcessor.StudentYamlFileProcessor
 import org.sazz.student.Student;
 import org.sazz.student.Student_short
 
@@ -13,10 +14,11 @@ fun main() {
 
 fun studentTest() {
     val filePath = "src/files/students.yaml"
-    val studentList = Student_list_yaml(filePath)
+    val studentList = Student_list(filePath, StudentYamlFileProcessor())
 
     studentList.add(Student(0, "NewJohn", "John", "JOGN", email = "jhon@hmail.ru"))
-    studentList.write_to_file("src/files", "students.yaml")
+    studentList.fileProcessor = StudentJsonFileProcessor()
+    studentList.write_to_file("src/files", "students.json")
 }
 
 fun checkValidStudent(student: Student) {
