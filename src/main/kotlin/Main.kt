@@ -1,27 +1,40 @@
 package org.sazz
 
-import org.sazz.config.Config
+import org.sazz.adapter.StudentListFileAdapter
 import org.sazz.db.DbInterface
 import org.sazz.db.PostgreDb
 import org.sazz.pattern.student.Data_list_student_short
 import org.sazz.strategy.Student_list
+import org.sazz.strategy.Student_list_file
 import org.sazz.strategy.Student_list_DB
 import org.sazz.strategy.studentfileprocessing.StudentJsonFileProcessor
 import org.sazz.strategy.studentfileprocessing.StudentYamlFileProcessor
 import org.sazz.student.Student
 import org.sazz.student.Student_short
+import javax.xml.stream.util.StreamReaderDelegate
 
 fun getDb() : DbInterface = PostgreDb.getInstance()
 
 fun main() {
+    testStudentAdapter()
+}
+
+fun testStudentAdapter() {
     val studentListDb = Student_list_DB()
-    println(studentListDb.deleteStudent(21))
+    val studentList = Student_list(studentListDb)
+    println(studentList.deleteStudent(21))
     println(studentListDb.getKNStudentShortList(2, 5))
+
+    val filePath = "src/files/students.yaml"
+    val studentListFile = Student_list_file(filePath, StudentYamlFileProcessor())
+    val otherStudentList = Student_list(StudentListFileAdapter(studentListFile))
+    otherStudentList.addStudent(Student(0, "SUpaJohn", "John", "JOGN", email = "jhon@hmail.ru"))
+    println(otherStudentList.getKNStudentShortList(1, 10))
 }
 
 fun studentTest() {
     val filePath = "src/files/students.yaml"
-    val studentList = Student_list(filePath, StudentYamlFileProcessor())
+    val studentList = Student_list_file(filePath, StudentYamlFileProcessor())
 
     studentList.add(Student(0, "NewJohn", "John", "JOGN", email = "jhon@hmail.ru"))
     studentList.fileProcessor = StudentJsonFileProcessor()

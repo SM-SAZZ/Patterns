@@ -16,6 +16,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation("org.postgresql:postgresql:42.7.2")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation(kotlin("reflect"))
 }
 
 tasks.test {
