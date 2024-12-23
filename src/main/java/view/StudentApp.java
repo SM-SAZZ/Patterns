@@ -75,7 +75,7 @@ public class StudentApp {
             }
         };
         JTable table = new JTable(tableModel);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane scrollPane = new JScrollPane(table);
 
         // Ïàíåëü óïðàâëåíèÿ
@@ -85,9 +85,9 @@ public class StudentApp {
         deleteButton.setEnabled(false);
 
         table.getSelectionModel().addListSelectionListener(e -> {
-            boolean rowSelected = table.getSelectedRow() >= 0;
-            editButton.setEnabled(rowSelected);
-            deleteButton.setEnabled(rowSelected);
+            int selectedRowCount = table.getSelectedRowCount();
+            editButton.setEnabled(selectedRowCount == 1); // "Èçìåíèòü" äîñòóïíà òîëüêî ïðè âûäåëåíèè îäíîé ñòðîêè
+            deleteButton.setEnabled(selectedRowCount > 0); // "Óäàëèòü" äîñòóïíà ïðè âûäåëåíèè îäíîé èëè áîëåå ñòðîê
         });
 
         // Çàãðóçêà äàííûõ â òàáëèöó
@@ -127,14 +127,33 @@ public class StudentApp {
 
 
         deleteButton.addActionListener(e -> {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow >= 0) {
-                int id = (int) tableModel.getValueAt(selectedRow, 0);
-                if (studentDB.deleteStudent(id)) {
-                    JOptionPane.showMessageDialog(panel, "Ñòóäåíò óäàëåí!");
+            int[] selectedRows = table.getSelectedRows();
+            if (selectedRows.length > 0) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        panel,
+                        "Âû óâåðåíû, ÷òî õîòèòå óäàëèòü âûáðàííûõ ñòóäåíòîâ?",
+                        "Ïîäòâåðæäåíèå óäàëåíèÿ",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean success = true;
+
+                    // Óäàëÿåì ñòóäåíòîâ ïî èõ ID
+                    for (int i = selectedRows.length - 1; i >= 0; i--) {
+                        int id = (int) tableModel.getValueAt(selectedRows[i], 0);
+                        if (!studentDB.deleteStudent(id)) {
+                            success = false;
+                        }
+                    }
+
+                    if (success) {
+                        JOptionPane.showMessageDialog(panel, "Âûáðàííûå ñòóäåíòû óäàëåíû!");
+                    } else {
+                        JOptionPane.showMessageDialog(panel, "Íå óäàëîñü óäàëèòü íåêîòîðûõ ñòóäåíòîâ.", "Îøèáêà", JOptionPane.ERROR_MESSAGE);
+                    }
+
                     refreshInfo(tableModel);
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Îøèáêà ïðè óäàëåíèè ñòóäåíòà.");
                 }
             }
         });
