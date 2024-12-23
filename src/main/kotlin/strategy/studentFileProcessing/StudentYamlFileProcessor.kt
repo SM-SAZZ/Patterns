@@ -1,4 +1,4 @@
-package org.sazz.strategy.studentFileProcessor
+package org.sazz.strategy.studentfileprocessing
 
 import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.decodeFromStream

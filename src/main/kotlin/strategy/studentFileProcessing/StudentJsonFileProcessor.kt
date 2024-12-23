@@ -1,4 +1,4 @@
-package org.sazz.strategy.studentFileProcessor
+package org.sazz.strategy.studentfileprocessing
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

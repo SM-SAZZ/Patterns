@@ -1,4 +1,4 @@
-package org.sazz.strategy.studentFileProcessor
+package org.sazz.strategy.studentfileprocessing
 
 import org.sazz.strategy.studentfileprocessing.StudentFileProcessorInterface
 import org.sazz.student.Student
