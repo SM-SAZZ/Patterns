@@ -2,6 +2,7 @@ package view;
 
 import org.sazz.dto.StudentFilter;
 import org.sazz.enums.SearchParam;
+import org.sazz.exceptions.ValidateException;
 import org.sazz.strategy.Student_list_DB;
 import org.sazz.student.Student;
 
@@ -10,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class StudentApp {
     private static final int PAGE_SIZE = 20;
@@ -93,16 +95,17 @@ public class StudentApp {
 
         // Îáðàáîò÷èêè êíîïîê
         addButton.addActionListener(e -> {
-            // Ìîêîâàÿ ôîðìà äîáàâëåíèÿ ñòóäåíòà
-            Student student = new Student(0, "Èâàí", "Èâàíîâ", "Èâàíîâè÷", "@ivan", "git", "123-456", "ivan@mail.com");
-            int id = studentDB.addStudent(student);
-            if (id > 0) {
-                JOptionPane.showMessageDialog(panel, "Ñòóäåíò äîáàâëåí!");
-                refreshInfo(tableModel);
-            } else {
-                JOptionPane.showMessageDialog(panel, "Îøèáêà ïðè äîáàâëåíèè ñòóäåíòà.");
-            }
+            showStudentForm(null, "Äîáàâèòü ñòóäåíòà", student -> {
+                int id = studentDB.addStudent(student);
+                if (id > 0) {
+                    JOptionPane.showMessageDialog(panel, "Ñòóäåíò äîáàâëåí!");
+                    refreshInfo(tableModel);
+                } else {
+                    JOptionPane.showMessageDialog(panel, "Îøèáêà ïðè äîáàâëåíèè ñòóäåíòà.");
+                }
+            });
         });
+
 
         editButton.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
@@ -110,16 +113,18 @@ public class StudentApp {
                 int id = (int) tableModel.getValueAt(selectedRow, 0);
                 Student student = studentDB.getStudentById(id);
                 if (student != null) {
-                    student.setFirstName("Îáíîâëåíî");
-                    if (studentDB.updateStudent(student)) {
-                        JOptionPane.showMessageDialog(panel, "Ñòóäåíò îáíîâëåí!");
-                        refreshInfo(tableModel);
-                    } else {
-                        JOptionPane.showMessageDialog(panel, "Îøèáêà ïðè îáíîâëåíèè ñòóäåíòà.");
-                    }
+                    showStudentForm(student, "Ðåäàêòèðîâàòü ñòóäåíòà", updatedStudent -> {
+                        if (studentDB.updateStudent(updatedStudent)) {
+                            JOptionPane.showMessageDialog(panel, "Ñòóäåíò îáíîâëåí!");
+                            refreshInfo(tableModel);
+                        } else {
+                            JOptionPane.showMessageDialog(panel, "Îøèáêà ïðè îáíîâëåíèè ñòóäåíòà.");
+                        }
+                    });
                 }
             }
         });
+
 
         deleteButton.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
@@ -241,12 +246,19 @@ public class StudentApp {
                 emailSearch
         );
 
-        // Çàãðóæàåì äàííûå è ïîëó÷àåì îáùåå êîëè÷åñòâî çàïèñåé
+        // Ïîëó÷àåì îáùåå êîëè÷åñòâî çàïèñåé
         int totalItems = studentDB.getFilteredStudentCount(studentFilter);
+        int lastPage = calculateLastPage(totalItems);
+        // Åñëè ïðîèçîøëî òàê, ÷òî òåêóùàÿ ñòðàíèöà áîëüøå, ÷åì ïîñëåäíÿÿ, òî îòêàòûâàåì ñòðàíèöó è ïåðåñ÷èòûâàåì
+        if (lastPage < currentPage) {
+            currentPage = lastPage;
+            refreshInfo(tableModel);
+            return;
+        }
         loadStudents(tableModel, studentFilter);
 
         // Îáíîâëÿåì ñîñòîÿíèå êíîïîê è ìåòêè ñòðàíèöû
-        updatePageControls(totalItems);
+        updatePageControls(lastPage);
     }
 
 
@@ -275,8 +287,7 @@ public class StudentApp {
         }
     }
 
-    private static void updatePageControls(int totalItems) {
-        int lastPage = calculateLastPage(totalItems);
+    private static void updatePageControls(int lastPage) {
 
         // Îáíîâëåíèå òåêñòà ìåòêè ñòðàíèöû
         pageInfoLabel.setText("Ñòðàíèöà: " + currentPage + " / " + lastPage);
@@ -290,6 +301,86 @@ public class StudentApp {
     private static int calculateLastPage(int totalItems) {
         int page = (int) Math.ceil((double) totalItems / PAGE_SIZE);
         return page == 0 ? 1 : page;
+    }
+
+    private static void showStudentForm(Student existingStudent, String title, Consumer<Student> onSave) {
+        JDialog dialog = new JDialog((Frame) null, title, true);
+        dialog.setSize(400, 300);
+        dialog.setLayout(new GridLayout(7, 2));
+
+        // Ïîëÿ äëÿ ââîäà äàííûõ
+        JTextField lastNameField = new JTextField(existingStudent != null ? existingStudent.getLastName() : "");
+        JTextField firstNameField = new JTextField(existingStudent != null ? existingStudent.getFirstName() : "");
+        JTextField middleNameField = new JTextField(existingStudent != null ? existingStudent.getMiddleName() : "");
+        JTextField telegramField = new JTextField(existingStudent != null && existingStudent.getTelegram() != null ? existingStudent.getTelegram() : "");
+        JTextField gitField = new JTextField(existingStudent != null && existingStudent.getGit() != null ? existingStudent.getGit() : "");
+        JTextField emailField = new JTextField(existingStudent != null && existingStudent.getEmail() != null ? existingStudent.getEmail() : "");
+
+        // Äîáàâëÿåì êîìïîíåíòû
+        dialog.add(new JLabel("Ôàìèëèÿ:"));
+        dialog.add(lastNameField);
+
+        dialog.add(new JLabel("Èìÿ:"));
+        dialog.add(firstNameField);
+
+        dialog.add(new JLabel("Îò÷åñòâî:"));
+        dialog.add(middleNameField);
+
+        dialog.add(new JLabel("Telegram:"));
+        dialog.add(telegramField);
+
+        dialog.add(new JLabel("GitHub:"));
+        dialog.add(gitField);
+
+        dialog.add(new JLabel("Email:"));
+        dialog.add(emailField);
+
+        // Êíîïêè
+        JButton saveButton = new JButton("Ñîõðàíèòü");
+        JButton cancelButton = new JButton("Îòìåíà");
+
+        dialog.add(saveButton);
+        dialog.add(cancelButton);
+
+        // Îáðàáîò÷èêè êíîïîê
+        saveButton.addActionListener(e -> {
+            // Ïðîñòàÿ âàëèäàöèÿ
+            String lastName = lastNameField.getText().trim();
+            String firstName = firstNameField.getText().trim();
+            String middleName = middleNameField.getText().trim();
+
+            if (lastName.isEmpty() || firstName.isEmpty() || middleName.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Ôàìèëèÿ, èìÿ è îò÷åñòâî îáÿçàòåëüíû äëÿ çàïîëíåíèÿ!", "Îøèáêà", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Ñîçäàåì èëè îáíîâëÿåì îáúåêò Student
+            try {
+                Student student = existingStudent != null ? existingStudent : new Student();
+                student.setLastName(lastName);
+                student.setFirstName(firstName);
+                student.setMiddleName(middleName);
+                student.setTelegram(telegramField.getText().trim());
+                student.setGit(gitField.getText().trim());
+                student.setEmail(emailField.getText().trim());
+                student.validate();
+
+                onSave.accept(student);
+                dialog.dispose();
+            } catch (ValidateException exception) {
+                JOptionPane.showMessageDialog(
+                        dialog,
+                        exception.getMessage(),
+                        "Îøèáêà",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        });
+
+        cancelButton.addActionListener(e -> dialog.dispose());
+
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 
 
