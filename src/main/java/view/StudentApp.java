@@ -16,18 +16,34 @@ public class StudentApp {
     private static int currentPage = 1;
     private static final Student_list_DB studentDB = new Student_list_DB();
 
+    /** Ïîëÿ ôèëüòðàöèè **/
     private static final JTextField nameField = new JTextField();
+
     private static final JComboBox<String> gitComboBox = new JComboBox<>(new String[] { "Íå âàæíî", "Äà", "Íåò" });
     private static final JTextField gitField = new JTextField();
 
     private static final JTextField emailField = new JTextField();
     private static final JComboBox<String> emailComboBox = new JComboBox<>(new String[] { "Íå âàæíî", "Äà", "Íåò" });
+
     private static final JTextField phoneField = new JTextField();
     private static final JComboBox<String> phoneComboBox = new JComboBox<>(new String[] { "Íå âàæíî", "Äà", "Íåò" });
+
     private static final JTextField telegramField = new JTextField();
     private static final JComboBox<String> telegramComboBox = new JComboBox<>(new String[] { "Íå âàæíî", "Äà", "Íåò" });
 
-    public static void create(String[] args) {
+    /** Ýëåìåíòû ïàãèíàöèè **/
+    private static final JLabel pageInfoLabel = new JLabel("Ñòðàíèöà: 1 / ?");
+    private static final JButton prevPageButton = new JButton("Ïðåäûäóùàÿ");
+    private static final JButton nextPageButton = new JButton("Ñëåäóþùàÿ");
+
+    /** Êíîïêè óïðàâëåíèÿ **/
+    private static final JButton refreshButton = new JButton("Îáíîâèòü");
+    private static final JButton addButton = new JButton("Äîáàâèòü");
+    private static final JButton editButton = new JButton("Èçìåíèòü");
+    private static final JButton deleteButton = new JButton("Óäàëèòü");
+
+
+    public static void create() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Student Management");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,12 +78,6 @@ public class StudentApp {
 
         // Ïàíåëü óïðàâëåíèÿ
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Äîáàâèòü");
-        JButton editButton = new JButton("Èçìåíèòü");
-        JButton deleteButton = new JButton("Óäàëèòü");
-        JButton nextPageButton = new JButton("Ñëåäóþùàÿ");
-        JButton prevPageButton = new JButton("Ïðåäûäóùàÿ");
-        JButton refreshButton = new JButton("Îáíîâèòü");
 
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
@@ -136,11 +146,10 @@ public class StudentApp {
             }
         });
 
-        refreshButton.addActionListener(e -> {
-            refreshInfo(tableModel);
-        });
+        refreshButton.addActionListener(e -> refreshInfo(tableModel));
 
         // Äîáàâëÿåì êíîïêè
+        buttonPanel.add(pageInfoLabel); // Ìåòêà ñòðàíèöû
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
@@ -194,7 +203,7 @@ public class StudentApp {
         textField.setEnabled(false); // Ïî óìîë÷àíèþ ïîëå âûêëþ÷åíî
         comboBox.addActionListener(e -> {
             // Ïîëå äîñòóïíî òîëüêî åñëè âûáðàí "Äà"
-            textField.setEnabled(comboBox.getSelectedItem().equals("Äà"));
+            textField.setEnabled(Objects.equals(comboBox.getSelectedItem(), "Äà"));
         });
     }
 
@@ -232,9 +241,14 @@ public class StudentApp {
                 emailSearch
         );
 
-        // Çàãðóæàåì äàííûå ñ ó÷åòîì ôèëüòðîâ
+        // Çàãðóæàåì äàííûå è ïîëó÷àåì îáùåå êîëè÷åñòâî çàïèñåé
+        int totalItems = studentDB.getFilteredStudentCount(studentFilter);
         loadStudents(tableModel, studentFilter);
+
+        // Îáíîâëÿåì ñîñòîÿíèå êíîïîê è ìåòêè ñòðàíèöû
+        updatePageControls(totalItems);
     }
+
 
 
     private static void loadStudents(
@@ -260,5 +274,23 @@ public class StudentApp {
             });
         }
     }
+
+    private static void updatePageControls(int totalItems) {
+        int lastPage = calculateLastPage(totalItems);
+
+        // Îáíîâëåíèå òåêñòà ìåòêè ñòðàíèöû
+        pageInfoLabel.setText("Ñòðàíèöà: " + currentPage + " / " + lastPage);
+
+        // Îòêëþ÷åíèå êíîïîê â çàâèñèìîñòè îò òåêóùåé ñòðàíèöû
+        prevPageButton.setEnabled(currentPage > 1);
+        nextPageButton.setEnabled(currentPage < lastPage);
+    }
+
+
+    private static int calculateLastPage(int totalItems) {
+        int page = (int) Math.ceil((double) totalItems / PAGE_SIZE);
+        return page == 0 ? 1 : page;
+    }
+
 
 }

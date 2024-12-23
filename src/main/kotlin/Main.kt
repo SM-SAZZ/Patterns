@@ -12,14 +12,12 @@ import org.sazz.strategy.studentfileprocessing.StudentYamlFileProcessor
 import org.sazz.student.Student
 import org.sazz.student.Student_short
 import view.StudentApp
-import java.io.PrintStream
 
 
 fun getDb() : DbInterface = PostgreDb.getInstance()
 
 fun main() {
-    val args = arrayOf<String>()
-    StudentApp.create(args)
+    StudentApp.create()
 }
 
 fun testStudentAdapter() {
