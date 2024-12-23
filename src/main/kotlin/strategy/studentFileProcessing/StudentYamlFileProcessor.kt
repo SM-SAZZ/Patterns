@@ -3,11 +3,11 @@ package org.sazz.strategy.studentFileProcessor
 import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.decodeFromStream
 import kotlinx.serialization.encodeToString
-import org.sazz.strategy.studentfileprocessor.StudentFileProcessor
+import org.sazz.strategy.studentfileprocessing.StudentFileProcessorInterface
 import org.sazz.student.Student
 import java.io.File
 
-class StudentYamlFileProcessor: StudentFileProcessor {
+class StudentYamlFileProcessor: StudentFileProcessorInterface {
     override fun read_from_file(filePath: String): MutableList<Student> {
         val file = File(filePath)
         if (!file.exists() || !file.isFile) {

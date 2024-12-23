@@ -1,11 +1,11 @@
 package org.sazz.strategy.studentFileProcessor
 
-import org.sazz.strategy.studentfileprocessor.StudentFileProcessor
+import org.sazz.strategy.studentfileprocessing.StudentFileProcessorInterface
 import org.sazz.student.Student
 import java.io.File
 import java.io.FileNotFoundException
 
-class StudentTxtFileProcessor: StudentFileProcessor {
+class StudentTxtFileProcessor: StudentFileProcessorInterface {
     override fun read_from_file(filePath: String): MutableList<Student> {
         val file = File(filePath)
         if (!file.exists() || !file.isFile) {

@@ -2,22 +2,22 @@ package org.sazz.strategy
 
 import org.sazz.pattern.Data_list
 import org.sazz.pattern.student.Data_list_student_short
-import org.sazz.strategy.studentfileprocessor.StudentFileProcessor
-import org.sazz.strategy.studentFileProcessor.StudentTxtFileProcessor
+import org.sazz.strategy.studentfileprocessing.StudentFileProcessorInterface
+import org.sazz.strategy.studentfileprocessing.StudentTxtFileProcessor
 import org.sazz.student.Student
 import org.sazz.student.Student_short
 
 class Student_list(
     private var students: MutableList<Student>,
-    var fileProcessor: StudentFileProcessor = StudentTxtFileProcessor()
+    var fileProcessor: StudentFileProcessorInterface = StudentTxtFileProcessor()
 ) {
     constructor(
-        fileProcessor: StudentFileProcessor = StudentTxtFileProcessor()
+        fileProcessor: StudentFileProcessorInterface = StudentTxtFileProcessor()
     ) : this(mutableListOf(), fileProcessor)
 
     constructor(
         filePath: String,
-        fileProcessor: StudentFileProcessor = StudentTxtFileProcessor()
+        fileProcessor: StudentFileProcessorInterface = StudentTxtFileProcessor()
     ) : this(mutableListOf(), fileProcessor) {
         read_from_file(filePath)
     }

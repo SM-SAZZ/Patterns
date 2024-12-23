@@ -2,11 +2,11 @@ package org.sazz.strategy.studentFileProcessor
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.sazz.strategy.studentfileprocessor.StudentFileProcessor
+import org.sazz.strategy.studentfileprocessing.StudentFileProcessorInterface
 import org.sazz.student.Student
 import java.io.File
 
-class StudentJsonFileProcessor: StudentFileProcessor {
+class StudentJsonFileProcessor: StudentFileProcessorInterface {
     override fun read_from_file(filePath: String): MutableList<Student> {
         val file = File(filePath)
         if (!file.exists() || !file.isFile) {
