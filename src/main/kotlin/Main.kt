@@ -5,6 +5,7 @@ import org.sazz.db.DbInterface
 import org.sazz.db.PostgreDb
 import org.sazz.pattern.student.Data_list_student_short
 import org.sazz.strategy.Student_list
+import org.sazz.strategy.Student_list_DB
 import org.sazz.strategy.studentfileprocessing.StudentJsonFileProcessor
 import org.sazz.strategy.studentfileprocessing.StudentYamlFileProcessor
 import org.sazz.student.Student
@@ -13,14 +14,9 @@ import org.sazz.student.Student_short
 fun getDb() : DbInterface = PostgreDb.getInstance()
 
 fun main() {
-    val db = getDb()
-    db.initConnectionsParams(Config)
-    db.connect()
-    val result = db.executeQuery("SELECT * FROM student")
-    while (result.next()) {
-        println(Student(result))
-    }
-    db.closeConnection()
+    val studentListDb = Student_list_DB()
+    println(studentListDb.deleteStudent(21))
+    println(studentListDb.getKNStudentShortList(2, 5))
 }
 
 fun studentTest() {
