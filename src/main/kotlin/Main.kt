@@ -1,27 +1,26 @@
 package org.sazz
 
-import org.sazz.db.Migration
-import org.sazz.db.MigrationList
-import org.sazz.migrations.`02102024_2353_create_table_students`
-import org.sazz.migrations.`03102024_0004_add_test_data_to_student_table`
+import org.sazz.config.Config
+import org.sazz.db.DbInterface
+import org.sazz.db.PostgreDb
 import org.sazz.pattern.student.Data_list_student_short
 import org.sazz.strategy.Student_list
-import org.sazz.strategy.studentfileprocessing.StudentYamlFileProcessor
 import org.sazz.strategy.studentfileprocessing.StudentJsonFileProcessor
-import org.sazz.student.Student;
+import org.sazz.strategy.studentfileprocessing.StudentYamlFileProcessor
+import org.sazz.student.Student
 import org.sazz.student.Student_short
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.Statement
+
+fun getDb() : DbInterface = PostgreDb.getInstance()
 
 fun main() {
-    val migrationList = MigrationList(
-        listOf(
-            `02102024_2353_create_table_students`(),
-            `03102024_0004_add_test_data_to_student_table`(),
-        )
-    )
-    migrationList.allUp()
+    val db = getDb()
+    db.initConnectionsParams(Config)
+    db.connect()
+    val result = db.executeQuery("SELECT * FROM student")
+    while (result.next()) {
+        println(result.getString("first_name"))
+    }
+    db.closeConnection()
 }
 
 fun studentTest() {
