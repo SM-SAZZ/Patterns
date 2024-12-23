@@ -5,18 +5,21 @@ import org.sazz.db.DbInterface
 import org.sazz.db.PostgreDb
 import org.sazz.pattern.student.Data_list_student_short
 import org.sazz.strategy.Student_list
-import org.sazz.strategy.Student_list_file
 import org.sazz.strategy.Student_list_DB
+import org.sazz.strategy.Student_list_file
 import org.sazz.strategy.studentfileprocessing.StudentJsonFileProcessor
 import org.sazz.strategy.studentfileprocessing.StudentYamlFileProcessor
 import org.sazz.student.Student
 import org.sazz.student.Student_short
-import javax.xml.stream.util.StreamReaderDelegate
+import view.StudentApp
+import java.io.PrintStream
+
 
 fun getDb() : DbInterface = PostgreDb.getInstance()
 
 fun main() {
-    testStudentAdapter()
+    val args = arrayOf<String>()
+    StudentApp.create(args)
 }
 
 fun testStudentAdapter() {
