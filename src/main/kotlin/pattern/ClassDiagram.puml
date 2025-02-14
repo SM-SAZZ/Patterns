@@ -1,4 +1,5 @@
 @startuml
+
 class Student {
   - id: Int
   - lastName: String
@@ -26,6 +27,7 @@ class Student {
   + read_from_txt(filePath: String): List<Student>
   + write_to_txt(directory: String, fileName: String, students: List<Student>): Unit
 }
+
 class Data_table<T> {
   - data: List<List<T>>
   + create(data: List<List<T>>): Data_table<T>
@@ -33,6 +35,7 @@ class Data_table<T> {
   + getColumnCount(): Int
   + getRowCount(): Int
 }
+
 abstract class Data_list<T : Comparable<T>> {
   - elements: List<T>
   - selectedIndices: MutableSet<Int>
@@ -44,6 +47,7 @@ abstract class Data_list<T : Comparable<T>> {
   + getNames(): List<String>
   + getData(): Data_table<Any>
 }
+
 abstract class StudentBase {
     - id: Int
     - git: String
@@ -51,6 +55,7 @@ abstract class StudentBase {
     + getLastNameWithInitials(): String
     + getInfo(): String
 }
+
 class Student_short {
     - id: Int
     - lastNameInitials: String
@@ -62,15 +67,20 @@ class Student_short {
     + getLastNameWithInitials(): String
     + compareTo(other: Student_short): Int
 }
+
 class Data_list_student_short {
     - students: List<Student_short>
     + Data_list_student_short(students: List<Student_short>)
     + getEntityFields(): List<String>
     + getDataRow(entity: Student_short): List<Any>
 }
+
 StudentBase <|-- Student_short
 Student --|> StudentBase
 Data_table "1" <-- "1..*" Data_list
 Data_list_student_short --|> Data_list
 Data_list_student_short o-- Student_short
+
+
+
 @enduml

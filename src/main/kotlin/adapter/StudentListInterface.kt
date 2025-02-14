@@ -1,13 +1,19 @@
 package org.sazz.adapter
 
+import org.sazz.dto.StudentFilter
 import org.sazz.pattern.student.Data_list_student_short
 import org.sazz.student.Student
 
 interface StudentListInterface {
+    var studentFilter: StudentFilter?
 
     fun getStudentById(id: Int): Student?
 
     fun getKNStudentShortList(k: Int, n: Int): Data_list_student_short
+
+    fun setStudentFilter(filter: StudentFilter?) {
+        this.studentFilter = filter
+    }
 
     fun addStudent(student: Student): Int
 

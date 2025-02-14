@@ -1,6 +1,5 @@
 package org.sazz.strategy.studentfileprocessing
 
-import org.sazz.strategy.studentfileprocessing.StudentFileProcessorInterface
 import org.sazz.student.Student
 import java.io.File
 import java.io.FileNotFoundException

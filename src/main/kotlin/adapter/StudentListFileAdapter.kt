@@ -1,10 +1,14 @@
 package org.sazz.adapter
 
+import org.sazz.dto.StudentFilter
 import org.sazz.pattern.student.Data_list_student_short
 import org.sazz.strategy.Student_list_file
 import org.sazz.student.Student
 
-class StudentListFileAdapter(private val studentListFile: Student_list_file) : StudentListInterface {
+class StudentListFileAdapter(
+    private val studentListFile: Student_list_file,
+    override var studentFilter: StudentFilter? = null
+) : StudentListInterface {
 
     override fun getStudentById(id: Int): Student? {
         return try {

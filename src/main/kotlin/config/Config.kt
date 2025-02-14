@@ -6,4 +6,6 @@ object Config {
     val db_name: String = "patterns-database";
     val db_user: String = "postgres";
     val db_password: String = "admin";
+
+
 }

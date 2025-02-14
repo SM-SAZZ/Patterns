@@ -1,6 +1,7 @@
 package org.sazz.strategy
 
 import org.sazz.adapter.StudentListInterface
+import org.sazz.dto.StudentFilter
 import org.sazz.pattern.student.Data_list_student_short
 import org.sazz.student.Student
 
@@ -10,7 +11,7 @@ class Student_list(private val studentSource: StudentListInterface) {
         return studentSource.getStudentById(id)
     }
 
-    fun getKNStudentShortList(k: Int, n: Int): Data_list_student_short {
+    fun getKNStudentShortList(k: Int, n: Int, studentFilter: StudentFilter? = null): Data_list_student_short {
         return studentSource.getKNStudentShortList(k, n)
     }
 

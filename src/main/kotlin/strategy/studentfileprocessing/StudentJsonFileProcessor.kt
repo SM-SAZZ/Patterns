@@ -1,13 +1,11 @@
 package org.sazz.strategy.studentfileprocessing
 
-import com.charleskorn.kaml.Yaml
-import com.charleskorn.kaml.decodeFromStream
 import kotlinx.serialization.encodeToString
-import org.sazz.strategy.studentfileprocessing.StudentFileProcessorInterface
+import kotlinx.serialization.json.Json
 import org.sazz.student.Student
 import java.io.File
 
-class StudentYamlFileProcessor: StudentFileProcessorInterface {
+class StudentJsonFileProcessor: StudentFileProcessorInterface {
     override fun read_from_file(filePath: String): MutableList<Student> {
         val file = File(filePath)
         if (!file.exists() || !file.isFile) {
@@ -15,7 +13,7 @@ class StudentYamlFileProcessor: StudentFileProcessorInterface {
         }
 
         try {
-            return Yaml.default.decodeFromStream(file.inputStream())
+            return Json.decodeFromString<MutableList<Student>>(file.readText()) ?: mutableListOf()
         } catch (e: Exception) {
             throw IllegalArgumentException("Ошибка при чтении файла JSON: ${e.message}")
         }
@@ -26,7 +24,7 @@ class StudentYamlFileProcessor: StudentFileProcessorInterface {
 
         try {
             file.parentFile?.mkdirs()
-            file.writeText(Yaml.default.encodeToString(students))
+            file.writeText(Json.encodeToString(students))
         } catch (e: Exception) {
             throw IllegalArgumentException("Ошибка при записи в файл JSON: ${e.message}")
         }

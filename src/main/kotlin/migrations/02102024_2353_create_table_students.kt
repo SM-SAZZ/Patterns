@@ -1,4 +1,5 @@
 package org.sazz.migrations
+
 import org.sazz.db.Migration
 
 class `02102024_2353_create_table_students` : Migration() {
@@ -17,6 +18,7 @@ class `02102024_2353_create_table_students` : Migration() {
                     ")"
         )
     }
+
     override fun down() {
         db.executeUpdate("DROP TABLE student")
     }

@@ -1,11 +1,13 @@
-package org.sazz.pattern
+package org.sazz.student
+
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
-import org.sazz.student.Student
 
 class StudentTest {
+
     private lateinit var student: Student
+
     @BeforeEach
     fun setUp() {
         student = Student(
@@ -15,6 +17,7 @@ class StudentTest {
             middleName = "Michael"
         )
     }
+
     @Test
     fun testPrimaryConstructor() {
         assertEquals(1, student.id)
@@ -26,6 +29,7 @@ class StudentTest {
         assertNull(student.phone)
         assertNull(student.email)
     }
+
     @Test
     fun testSecondaryConstructor() {
         val student = Student(
@@ -38,6 +42,7 @@ class StudentTest {
             email = "jane@example.com",
             git = "janesmith"
         )
+
         assertEquals(2, student.id)
         assertEquals("Smith", student.lastName)
         assertEquals("Jane", student.firstName)
@@ -47,6 +52,7 @@ class StudentTest {
         assertEquals("jane@example.com", student.email)
         assertEquals("janesmith", student.git)
     }
+
     @Test
     fun testMapConstructor() {
         val info = mapOf(
@@ -58,6 +64,7 @@ class StudentTest {
             "email" to "bob@example.com"
         )
         val student = Student(info)
+
         assertEquals(3, student.id)
         assertEquals("Brown", student.lastName)
         assertEquals("Bob", student.firstName)
@@ -67,57 +74,68 @@ class StudentTest {
         assertNull(student.telegram)
         assertNull(student.git)
     }
+
     @Test
     fun testValidPhoneNumber() {
         student.phone = "+1234567890"
         assertEquals("+1234567890", student.phone)
     }
+
     @Test
     fun testInvalidPhoneNumber() {
         assertThrows(IllegalArgumentException::class.java) {
             student.phone = "invalid"
         }
     }
+
     @Test
     fun testValidEmail() {
         student.email = "test@example.com"
         assertEquals("test@example.com", student.email)
     }
+
     @Test
     fun testInvalidEmail() {
         assertThrows(IllegalArgumentException::class.java) {
             student.email = "invalid"
         }
     }
+
     @Test
     fun testToString() {
         student.phone = "+1234567890"
         student.email = "john@example.com"
         student.telegram = "@johndoe"
         student.git = "johndoe"
-        val expected = "Student(id=1, name='John Michael Doe', phone=+1234567890, telegram=@johndoe, email=john@example.com, git=johndoe)"
+
+        val expected = "Student(id=1, firstName=John, lastName=Doe, middleName=Michael, phone=+1234567890, telegram=@johndoe, email=john@example.com, git=johndoe)"
         assertEquals(expected, student.toString())
     }
+
     @Test
     fun testValidateValid() {
         student.git = "johndoe"
         student.email = "john@example.com"
         assertTrue(student.validate())
     }
+
     @Test
     fun testValidateInvalid() {
         assertFalse(student.validate())
     }
+
     @Test
     fun testValidateWithOnlyGit() {
         student.git = "johndoe"
         assertFalse(student.validate())
     }
+
     @Test
     fun testValidateWithOnlyContact() {
         student.phone = "+1234567890"
         assertFalse(student.validate())
     }
+
     @Test
     fun testSetContacts() {
         student.set_contacts("john@example.com", "@johndoe", "+1234567890")
@@ -125,6 +143,7 @@ class StudentTest {
         assertEquals("@johndoe", student.telegram)
         assertEquals("+1234567890", student.phone)
     }
+
     @Test
     fun testSetContactsPartial() {
         student.set_contacts("john@example.com", null, null)
@@ -132,6 +151,7 @@ class StudentTest {
         assertNull(student.telegram)
         assertNull(student.phone)
     }
+
     @Test
     fun testSetContactsInvalid() {
         assertThrows(IllegalArgumentException::class.java) {
