@@ -11,7 +11,7 @@ class StudentUpdateController(
 
     constructor(studentListController: Student_list_controller) : this(
         studentListController,
-        Student_list(Student_list_DB())
+        studentListController.getStudentsList()
     )
 
     override fun saveProcessedStudent(student: Student, id: Int?): String {
