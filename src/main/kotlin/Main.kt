@@ -1,6 +1,7 @@
 package org.sazz
 
 import org.sazz.adapter.StudentListFileAdapter
+import org.sazz.controllers.Student_list_controller
 import org.sazz.db.DbInterface
 import org.sazz.db.PostgreDb
 import org.sazz.pattern.student.Data_list_student_short
@@ -11,13 +12,16 @@ import org.sazz.strategy.studentfileprocessing.StudentJsonFileProcessor
 import org.sazz.strategy.studentfileprocessing.StudentYamlFileProcessor
 import org.sazz.student.Student
 import org.sazz.student.Student_short
+import view.MainWindowView
 import view.StudentApp
 
 
 fun getDb() : DbInterface = PostgreDb.getInstance()
 
 fun main() {
-    StudentApp.create()
+    val view = MainWindowView()
+    val controller = Student_list_controller(Student_list_DB(), view)
+    view.create(controller)
 }
 
 fun testStudentAdapter() {
