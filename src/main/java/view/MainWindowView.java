@@ -2,6 +2,7 @@ package view;
 
 import org.jetbrains.annotations.NotNull;
 import org.sazz.controllers.Student_list_controller;
+import org.sazz.db.exceptions.DbConnectionException;
 import org.sazz.dto.StudentFilter;
 import org.sazz.pattern.student.Data_list_student_short;
 import org.sazz.student.Student;
@@ -189,5 +190,12 @@ public class MainWindowView implements ViewInterface {
                     student.getContactInfo(),
             });
         }
+    }
+
+    public void showError(String message) {
+        JDialog dialog = new JDialog((Frame) null, "Ошибка", true);
+        dialog.setSize(400, 300);
+        dialog.setLayout(new GridLayout(7, 2));
+        JOptionPane.showMessageDialog(dialog, "Произошла непредвиденная ошибка: " + message, "Ошибка", JOptionPane.ERROR_MESSAGE);
     }
 }
