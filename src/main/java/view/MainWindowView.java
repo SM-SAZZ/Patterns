@@ -18,11 +18,11 @@ import java.util.Objects;
 
 public class MainWindowView implements ViewInterface {
 
-    /** Информация о текущей странице  **/
+    /** РРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РµРєСѓС‰РµР№ СЃС‚СЂР°РЅРёС†Рµ  **/
     private static final int PAGE_SIZE = 20;
     private static int currentPage = 1;
 
-    /** Контроллер **/
+    /** РљРѕРЅС‚СЂРѕР»Р»РµСЂ **/
     private Student_list_controller controller;
 
     public void setController(Student_list_controller controller) {
@@ -36,40 +36,40 @@ public class MainWindowView implements ViewInterface {
     }
 
     /**
-     * Таблица
+     * РўР°Р±Р»РёС†Р°
      */
     private DefaultTableModel tableModel;
 
-    /** Поля фильтрации **/
+    /** РџРѕР»СЏ С„РёР»СЊС‚СЂР°С†РёРё **/
     private final JTextField nameField = new JTextField();
 
-    private final JComboBox<String> gitComboBox = new JComboBox<>(new String[] { "Не важно", "Да", "Нет" });
+    private final JComboBox<String> gitComboBox = new JComboBox<>(new String[] { "РќРµ РІР°Р¶РЅРѕ", "Р”Р°", "РќРµС‚" });
     private final JTextField gitField = new JTextField();
 
     private final JTextField emailField = new JTextField();
-    private final JComboBox<String> emailComboBox = new JComboBox<>(new String[] { "Не важно", "Да", "Нет" });
+    private final JComboBox<String> emailComboBox = new JComboBox<>(new String[] { "РќРµ РІР°Р¶РЅРѕ", "Р”Р°", "РќРµС‚" });
 
     private final JTextField phoneField = new JTextField();
-    private final JComboBox<String> phoneComboBox = new JComboBox<>(new String[] { "Не важно", "Да", "Нет" });
+    private final JComboBox<String> phoneComboBox = new JComboBox<>(new String[] { "РќРµ РІР°Р¶РЅРѕ", "Р”Р°", "РќРµС‚" });
 
     private final JTextField telegramField = new JTextField();
-    private final JComboBox<String> telegramComboBox = new JComboBox<>(new String[] { "Не важно", "Да", "Нет" });
+    private final JComboBox<String> telegramComboBox = new JComboBox<>(new String[] { "РќРµ РІР°Р¶РЅРѕ", "Р”Р°", "РќРµС‚" });
 
-    /** Элементы пагинации **/
-    private final JLabel pageInfoLabel = new JLabel("Страница: 1 / ?");
-    private final JButton prevPageButton = new JButton("Предыдущая");
-    private final JButton nextPageButton = new JButton("Следующая");
+    /** Р­Р»РµРјРµРЅС‚С‹ РїР°РіРёРЅР°С†РёРё **/
+    private final JLabel pageInfoLabel = new JLabel("РЎС‚СЂР°РЅРёС†Р°: 1 / ?");
+    private final JButton prevPageButton = new JButton("РџСЂРµРґС‹РґСѓС‰Р°СЏ");
+    private final JButton nextPageButton = new JButton("РЎР»РµРґСѓСЋС‰Р°СЏ");
 
-    /** Кнопки управления **/
-    private final JButton refreshButton = new JButton("Обновить");
-    private final JButton addButton = new JButton("Добавить");
-    private final JButton editButton = new JButton("Изменить");
-    private final JButton deleteButton = new JButton("Удалить");
+    /** РљРЅРѕРїРєРё СѓРїСЂР°РІР»РµРЅРёСЏ **/
+    private final JButton refreshButton = new JButton("РћР±РЅРѕРІРёС‚СЊ");
+    private final JButton addButton = new JButton("Р”РѕР±Р°РІРёС‚СЊ");
+    private final JButton editButton = new JButton("РР·РјРµРЅРёС‚СЊ");
+    private final JButton deleteButton = new JButton("РЈРґР°Р»РёС‚СЊ");
 
     public MainWindowView() {}
 
     public void create(Student_list_controller controller) {
-        SimpleLogger.info("Инициализация окна управления студентами...");
+        SimpleLogger.info("РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РѕРєРЅР° СѓРїСЂР°РІР»РµРЅРёСЏ СЃС‚СѓРґРµРЅС‚Р°РјРё...");
         setController(controller);
         controller.firstInitDataList();
         SwingUtilities.invokeLater(() -> {
@@ -78,33 +78,33 @@ public class MainWindowView implements ViewInterface {
             frame.setSize(800, 600);
 
             JTabbedPane tabbedPane = new JTabbedPane();
-            tabbedPane.add("Список студентов", createStudentTab());
+            tabbedPane.add("РЎРїРёСЃРѕРє СЃС‚СѓРґРµРЅС‚РѕРІ", createStudentTab());
 
             frame.add(tabbedPane);
             frame.setVisible(true);
-            SimpleLogger.info("Окно управления успешно инициализировано.");
+            SimpleLogger.info("РћРєРЅРѕ СѓРїСЂР°РІР»РµРЅРёСЏ СѓСЃРїРµС€РЅРѕ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅРѕ.");
             update();
         });
     }
 
     private JPanel createStudentTab() {
-        SimpleLogger.info("Создание вкладки 'Список студентов'...");
+        SimpleLogger.info("РЎРѕР·РґР°РЅРёРµ РІРєР»Р°РґРєРё 'РЎРїРёСЃРѕРє СЃС‚СѓРґРµРЅС‚РѕРІ'...");
         JPanel panel = new JPanel(new BorderLayout());
         addFilters(panel);
 
-        // Таблица студентов
+        // РўР°Р±Р»РёС†Р° СЃС‚СѓРґРµРЅС‚РѕРІ
         String[] columnNames = dataList.getEntityFields().toArray(new String[0]);
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Запрет редактирования
+                return false; // Р—Р°РїСЂРµС‚ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
             }
         };
         JTable table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane scrollPane = new JScrollPane(table);
 
-        // Панель управления
+        // РџР°РЅРµР»СЊ СѓРїСЂР°РІР»РµРЅРёСЏ
         JPanel buttonPanel = new JPanel();
 
         editButton.setEnabled(false);
@@ -112,20 +112,20 @@ public class MainWindowView implements ViewInterface {
 
         table.getSelectionModel().addListSelectionListener(e -> {
             int selectedRowCount = table.getSelectedRowCount();
-            editButton.setEnabled(selectedRowCount == 1); // "Изменить" доступна только при выделении одной строки
-            deleteButton.setEnabled(selectedRowCount > 0); // "Удалить" доступна при выделении одной или более строк
+            editButton.setEnabled(selectedRowCount == 1); // "РР·РјРµРЅРёС‚СЊ" РґРѕСЃС‚СѓРїРЅР° С‚РѕР»СЊРєРѕ РїСЂРё РІС‹РґРµР»РµРЅРёРё РѕРґРЅРѕР№ СЃС‚СЂРѕРєРё
+            deleteButton.setEnabled(selectedRowCount > 0); // "РЈРґР°Р»РёС‚СЊ" РґРѕСЃС‚СѓРїРЅР° РїСЂРё РІС‹РґРµР»РµРЅРёРё РѕРґРЅРѕР№ РёР»Рё Р±РѕР»РµРµ СЃС‚СЂРѕРє
         });
 
         addButton.addActionListener(e -> {
-            SimpleLogger.info("Нажата кнопка 'Добавить'.");
+            SimpleLogger.info("РќР°Р¶Р°С‚Р° РєРЅРѕРїРєР° 'Р”РѕР±Р°РІРёС‚СЊ'.");
             StudentCreateController studentCreateController = new StudentCreateController(this.controller);
             StudentFormModal modal = new StudentFormModal();
             modal.controller = studentCreateController;
-            modal.create(null, "Создать новую запись");
+            modal.create(null, "РЎРѕР·РґР°С‚СЊ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ");
         });
 
         editButton.addActionListener(e -> {
-            SimpleLogger.info("Нажата кнопка 'Изменить'.");
+            SimpleLogger.info("РќР°Р¶Р°С‚Р° РєРЅРѕРїРєР° 'РР·РјРµРЅРёС‚СЊ'.");
             StudentUpdateController studentUpdateController = new StudentUpdateController(this.controller);
             StudentFormModal modal = new StudentFormModal();
             modal.controller = studentUpdateController;
@@ -134,43 +134,43 @@ public class MainWindowView implements ViewInterface {
                 int id = (int) tableModel.getValueAt(selectedRow, 0);
                 Student student = studentUpdateController.getStudentById(id);
                 if (student == null) {
-                    SimpleLogger.error("Студент с ID " + id + " не найден.");
-                    showError("Запись не была найдена!");
+                    SimpleLogger.error("РЎС‚СѓРґРµРЅС‚ СЃ ID " + id + " РЅРµ РЅР°Р№РґРµРЅ.");
+                    showError("Р—Р°РїРёСЃСЊ РЅРµ Р±С‹Р»Р° РЅР°Р№РґРµРЅР°!");
                 }
-                modal.create(student, "Обновить запись");
+                modal.create(student, "РћР±РЅРѕРІРёС‚СЊ Р·Р°РїРёСЃСЊ");
             }
         });
 
         deleteButton.addActionListener(e -> {
-            SimpleLogger.info("Нажата кнопка 'Удалить'.");
+            SimpleLogger.info("РќР°Р¶Р°С‚Р° РєРЅРѕРїРєР° 'РЈРґР°Р»РёС‚СЊ'.");
             int[] selectedRows = table.getSelectedRows();
             if (selectedRows.length > 0) {
                 int confirm = JOptionPane.showConfirmDialog(
                         panel,
-                        "Вы уверены, что хотите удалить выбранных студентов?",
-                        "Подтверждение удаления",
+                        "Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ РІС‹Р±СЂР°РЅРЅС‹С… СЃС‚СѓРґРµРЅС‚РѕРІ?",
+                        "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СѓРґР°Р»РµРЅРёСЏ",
                         JOptionPane.YES_NO_OPTION
                 );
 
                 if (confirm == JOptionPane.YES_OPTION) {
                     boolean success = true;
 
-                    // Удаляем студентов по их ID
+                    // РЈРґР°Р»СЏРµРј СЃС‚СѓРґРµРЅС‚РѕРІ РїРѕ РёС… ID
                     for (int i = selectedRows.length - 1; i >= 0; i--) {
                         int id = (int) tableModel.getValueAt(selectedRows[i], 0);
-                        SimpleLogger.info("Попытка удаления студента с ID: " + id);
+                        SimpleLogger.info("РџРѕРїС‹С‚РєР° СѓРґР°Р»РµРЅРёСЏ СЃС‚СѓРґРµРЅС‚Р° СЃ ID: " + id);
                         if (!controller.deleteStudent(id)) {
-                            SimpleLogger.error("Не удалось удалить студента с ID: " + id);
+                            SimpleLogger.error("РќРµ СѓРґР°Р»РѕСЃСЊ СѓРґР°Р»РёС‚СЊ СЃС‚СѓРґРµРЅС‚Р° СЃ ID: " + id);
                             success = false;
                         }
                     }
 
                     if (success) {
-                        SimpleLogger.info("Выбранные студенты успешно удалены.");
-                        JOptionPane.showMessageDialog(panel, "Выбранные студенты удалены!");
+                        SimpleLogger.info("Р’С‹Р±СЂР°РЅРЅС‹Рµ СЃС‚СѓРґРµРЅС‚С‹ СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅС‹.");
+                        JOptionPane.showMessageDialog(panel, "Р’С‹Р±СЂР°РЅРЅС‹Рµ СЃС‚СѓРґРµРЅС‚С‹ СѓРґР°Р»РµРЅС‹!");
                     } else {
-                        SimpleLogger.error("Не удалось удалить некоторых студентов.");
-                        JOptionPane.showMessageDialog(panel, "Не удалось удалить некоторых студентов.", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                        SimpleLogger.error("РќРµ СѓРґР°Р»РѕСЃСЊ СѓРґР°Р»РёС‚СЊ РЅРµРєРѕС‚РѕСЂС‹С… СЃС‚СѓРґРµРЅС‚РѕРІ.");
+                        JOptionPane.showMessageDialog(panel, "РќРµ СѓРґР°Р»РѕСЃСЊ СѓРґР°Р»РёС‚СЊ РЅРµРєРѕС‚РѕСЂС‹С… СЃС‚СѓРґРµРЅС‚РѕРІ.", "РћС€РёР±РєР°", JOptionPane.ERROR_MESSAGE);
                     }
                     controller.refresh_data();
                 }
@@ -179,23 +179,23 @@ public class MainWindowView implements ViewInterface {
 
         nextPageButton.addActionListener(e -> {
             currentPage++;
-            SimpleLogger.info("Переход на следующую страницу: " + currentPage);
+            SimpleLogger.info("РџРµСЂРµС…РѕРґ РЅР° СЃР»РµРґСѓСЋС‰СѓСЋ СЃС‚СЂР°РЅРёС†Сѓ: " + currentPage);
             controller.refresh_data(PAGE_SIZE, currentPage, getCurrentFilter());
         });
 
         prevPageButton.addActionListener(e -> {
             if (currentPage > 1) {
                 currentPage--;
-                SimpleLogger.info("Переход на предыдущую страницу: " + currentPage);
+                SimpleLogger.info("РџРµСЂРµС…РѕРґ РЅР° РїСЂРµРґС‹РґСѓС‰СѓСЋ СЃС‚СЂР°РЅРёС†Сѓ: " + currentPage);
                 controller.refresh_data(PAGE_SIZE, currentPage, getCurrentFilter());
             }
         });
 
         refreshButton.addActionListener(e -> updateFilterInfo());
 
-        // Добавляем кнопки
-        SimpleLogger.info("Обновление данных таблицы.");
-        buttonPanel.add(pageInfoLabel); // Метка страницы
+        // Р”РѕР±Р°РІР»СЏРµРј РєРЅРѕРїРєРё
+        SimpleLogger.info("РћР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹.");
+        buttonPanel.add(pageInfoLabel); // РњРµС‚РєР° СЃС‚СЂР°РЅРёС†С‹
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
@@ -206,42 +206,42 @@ public class MainWindowView implements ViewInterface {
         panel.add(scrollPane, BorderLayout.CENTER);
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
-        SimpleLogger.info("Вкладка 'Список студентов' успешно создана.");
+        SimpleLogger.info("Р’РєР»Р°РґРєР° 'РЎРїРёСЃРѕРє СЃС‚СѓРґРµРЅС‚РѕРІ' СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅР°.");
         return panel;
     }
 
     @Override
     public void update() {
-        SimpleLogger.info("Обновление таблицы студентов.");
+        SimpleLogger.info("РћР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ СЃС‚СѓРґРµРЅС‚РѕРІ.");
         set_table_params();
         set_table_data();
     }
 
     private void set_table_params() {
         List<String> newColumnNames = dataList.getEntityFields();
-        SimpleLogger.info("Загрузка данных студентов в таблицу.");
+        SimpleLogger.info("Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С… СЃС‚СѓРґРµРЅС‚РѕРІ РІ С‚Р°Р±Р»РёС†Сѓ.");
         tableModel.setColumnIdentifiers(newColumnNames.toArray());
 
-        // Получаем количество страниц
+        // РџРѕР»СѓС‡Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂР°РЅРёС†
         int lastPage = dataList.getPagination().getTotalPages();
 
-        // Если произошло так, что текущая страница больше, чем последняя, то откатываем страницу и пересчитываем
+        // Р•СЃР»Рё РїСЂРѕРёР·РѕС€Р»Рѕ С‚Р°Рє, С‡С‚Рѕ С‚РµРєСѓС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р° Р±РѕР»СЊС€Рµ, С‡РµРј РїРѕСЃР»РµРґРЅСЏСЏ, С‚Рѕ РѕС‚РєР°С‚С‹РІР°РµРј СЃС‚СЂР°РЅРёС†Сѓ Рё РїРµСЂРµСЃС‡РёС‚С‹РІР°РµРј
         if (lastPage < currentPage) {
             currentPage = lastPage;
             controller.refresh_data(PAGE_SIZE, currentPage, getCurrentFilter());
             return;
         }
-        SimpleLogger.info("Данные студентов успешно загружены.");
+        SimpleLogger.info("Р”Р°РЅРЅС‹Рµ СЃС‚СѓРґРµРЅС‚РѕРІ СѓСЃРїРµС€РЅРѕ Р·Р°РіСЂСѓР¶РµРЅС‹.");
 
         updatePageControls(lastPage);
     }
 
     private void updatePageControls(int lastPage) {
 
-        // Обновление текста метки страницы
-        pageInfoLabel.setText("Страница: " + currentPage + " / " + lastPage);
+        // РћР±РЅРѕРІР»РµРЅРёРµ С‚РµРєСЃС‚Р° РјРµС‚РєРё СЃС‚СЂР°РЅРёС†С‹
+        pageInfoLabel.setText("РЎС‚СЂР°РЅРёС†Р°: " + currentPage + " / " + lastPage);
 
-        // Отключение кнопок в зависимости от текущей страницы
+        // РћС‚РєР»СЋС‡РµРЅРёРµ РєРЅРѕРїРѕРє РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РµРєСѓС‰РµР№ СЃС‚СЂР°РЅРёС†С‹
         prevPageButton.setEnabled(currentPage > 1);
         nextPageButton.setEnabled(currentPage < lastPage);
     }
@@ -251,9 +251,9 @@ public class MainWindowView implements ViewInterface {
     }
 
     private void set_table_data() {
-        tableModel.setRowCount(0); // Очищаем таблицу
+        tableModel.setRowCount(0); // РћС‡РёС‰Р°РµРј С‚Р°Р±Р»РёС†Сѓ
 
-        // Получаем список студентов с учетом фильтров
+        // РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє СЃС‚СѓРґРµРЅС‚РѕРІ СЃ СѓС‡РµС‚РѕРј С„РёР»СЊС‚СЂРѕРІ
         List<Student_short> students = dataList.toList();
 
         for (Student_short student : students) {
@@ -267,10 +267,10 @@ public class MainWindowView implements ViewInterface {
     }
 
     public void showError(String message) {
-        JDialog dialog = new JDialog((Frame) null, "Ошибка", true);
+        JDialog dialog = new JDialog((Frame) null, "РћС€РёР±РєР°", true);
         dialog.setSize(400, 300);
         dialog.setLayout(new GridLayout(7, 2));
-        JOptionPane.showMessageDialog(dialog, "Произошла непредвиденная ошибка: " + message, "Ошибка", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(dialog, "РџСЂРѕРёР·РѕС€Р»Р° РЅРµРїСЂРµРґРІРёРґРµРЅРЅР°СЏ РѕС€РёР±РєР°: " + message, "РћС€РёР±РєР°", JOptionPane.ERROR_MESSAGE);
     }
 
      public void updateFilterInfo() {
@@ -310,20 +310,20 @@ public class MainWindowView implements ViewInterface {
      }
 
     private void addFilters(JPanel panel) {
-        // Панель фильтрации
+        // РџР°РЅРµР»СЊ С„РёР»СЊС‚СЂР°С†РёРё
         JPanel filterPanel = new JPanel(new GridLayout(5, 3));
-        filterPanel.setBorder(BorderFactory.createTitledBorder("Фильтры"));
+        filterPanel.setBorder(BorderFactory.createTitledBorder("Р¤РёР»СЊС‚СЂС‹"));
 
-        // Настройка фильтров
+        // РќР°СЃС‚СЂРѕР№РєР° С„РёР»СЊС‚СЂРѕРІ
         setupFilter(gitComboBox, gitField);
         setupFilter(emailComboBox, emailField);
         setupFilter(phoneComboBox, phoneField);
         setupFilter(telegramComboBox, telegramField);
 
-        // Добавляем элементы фильтров
-        filterPanel.add(new JLabel("Фамилия и инициалы:"));
+        // Р”РѕР±Р°РІР»СЏРµРј СЌР»РµРјРµРЅС‚С‹ С„РёР»СЊС‚СЂРѕРІ
+        filterPanel.add(new JLabel("Р¤Р°РјРёР»РёСЏ Рё РёРЅРёС†РёР°Р»С‹:"));
         filterPanel.add(nameField);
-        filterPanel.add(new JLabel()); // Заполнитель
+        filterPanel.add(new JLabel()); // Р—Р°РїРѕР»РЅРёС‚РµР»СЊ
 
         filterPanel.add(new JLabel("GitHub:"));
         filterPanel.add(gitComboBox);
@@ -333,7 +333,7 @@ public class MainWindowView implements ViewInterface {
         filterPanel.add(emailComboBox);
         filterPanel.add(emailField);
 
-        filterPanel.add(new JLabel("Телефон:"));
+        filterPanel.add(new JLabel("РўРµР»РµС„РѕРЅ:"));
         filterPanel.add(phoneComboBox);
         filterPanel.add(phoneField);
 
@@ -345,10 +345,10 @@ public class MainWindowView implements ViewInterface {
     }
 
     private static void setupFilter(JComboBox<String> comboBox, JTextField textField) {
-        textField.setEnabled(false); // По умолчанию поле выключено
+        textField.setEnabled(false); // РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РїРѕР»Рµ РІС‹РєР»СЋС‡РµРЅРѕ
         comboBox.addActionListener(e -> {
-            // Поле доступно только если выбран "Да"
-            textField.setEnabled(Objects.equals(comboBox.getSelectedItem(), "Да"));
+            // РџРѕР»Рµ РґРѕСЃС‚СѓРїРЅРѕ С‚РѕР»СЊРєРѕ РµСЃР»Рё РІС‹Р±СЂР°РЅ "Р”Р°"
+            textField.setEnabled(Objects.equals(comboBox.getSelectedItem(), "Р”Р°"));
         });
     }
 }

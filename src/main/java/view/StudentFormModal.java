@@ -17,7 +17,7 @@ public class StudentFormModal {
         dialog.setSize(400, 300);
         dialog.setLayout(new GridLayout(7, 2));
 
-        // Поля для ввода данных
+        // РџРѕР»СЏ РґР»СЏ РІРІРѕРґР° РґР°РЅРЅС‹С…
         JTextField lastNameField = new JTextField(existingStudent != null ? existingStudent.getLastName() : "");
         JTextField firstNameField = new JTextField(existingStudent != null ? existingStudent.getFirstName() : "");
         JTextField middleNameField = new JTextField(existingStudent != null ? existingStudent.getMiddleName() : "");
@@ -25,24 +25,24 @@ public class StudentFormModal {
         JTextField gitField = new JTextField(existingStudent != null && existingStudent.getGit() != null ? existingStudent.getGit() : "");
         JTextField emailField = new JTextField(existingStudent != null && existingStudent.getEmail() != null ? existingStudent.getEmail() : "");
 
-        // Добавляем компоненты
+        // Р”РѕР±Р°РІР»СЏРµРј РєРѕРјРїРѕРЅРµРЅС‚С‹
         ArrayList<String> accessFields = controller.getAccessFields();
         System.out.println(accessFields.toString());
-        dialog.add(new JLabel("Фамилия:"));
+        dialog.add(new JLabel("Р¤Р°РјРёР»РёСЏ:"));
         dialog.add(lastNameField);
-        if (!accessFields.contains("Фамилия")) {
+        if (!accessFields.contains("Р¤Р°РјРёР»РёСЏ")) {
             lastNameField.setEnabled(false);
         }
 
-        dialog.add(new JLabel("Имя:"));
+        dialog.add(new JLabel("РРјСЏ:"));
         dialog.add(firstNameField);
-        if (!accessFields.contains("Имя")) {
+        if (!accessFields.contains("РРјСЏ")) {
             firstNameField.setEnabled(false);
         }
 
-        dialog.add(new JLabel("Отчество:"));
+        dialog.add(new JLabel("РћС‚С‡РµСЃС‚РІРѕ:"));
         dialog.add(middleNameField);
-        if (!accessFields.contains("Отчество")) {
+        if (!accessFields.contains("РћС‚С‡РµСЃС‚РІРѕ")) {
             middleNameField.setEnabled(false);
         }
 
@@ -64,18 +64,18 @@ public class StudentFormModal {
             emailField.setEnabled(false);
         }
 
-        // Кнопки
-        JButton saveButton = new JButton("Сохранить");
-        JButton cancelButton = new JButton("Отмена");
+        // РљРЅРѕРїРєРё
+        JButton saveButton = new JButton("РЎРѕС…СЂР°РЅРёС‚СЊ");
+        JButton cancelButton = new JButton("РћС‚РјРµРЅР°");
 
         dialog.add(saveButton);
         dialog.add(cancelButton);
 
-        // Обработчики кнопок
+        // РћР±СЂР°Р±РѕС‚С‡РёРєРё РєРЅРѕРїРѕРє
         saveButton.addActionListener(e -> {
-            // Простая валидация
+            // РџСЂРѕСЃС‚Р°СЏ РІР°Р»РёРґР°С†РёСЏ
 
-            // Создаем или обновляем объект Student
+            // РЎРѕР·РґР°РµРј РёР»Рё РѕР±РЅРѕРІР»СЏРµРј РѕР±СЉРµРєС‚ Student
             try {
                Student student = controller.processForm(
                        existingStudent,
@@ -94,7 +94,7 @@ public class StudentFormModal {
                 JOptionPane.showMessageDialog(
                         dialog,
                         exception.getMessage(),
-                        "Ошибка",
+                        "РћС€РёР±РєР°",
                         JOptionPane.ERROR_MESSAGE
                 );
             }
