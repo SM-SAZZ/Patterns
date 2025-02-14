@@ -6,6 +6,7 @@ import org.sazz.db.DbInterface
 import org.sazz.db.PostgreDb
 import org.sazz.dto.StudentFilter
 import org.sazz.enums.SearchParam
+import org.sazz.logger.SimpleLogger
 import org.sazz.pattern.student.Data_list_student_short
 import org.sazz.student.Student
 import org.sazz.student.Student_short
@@ -40,11 +41,16 @@ class Student_list_DB(
         }
     }
 
+    override fun initStudentFilter(studentFilter: StudentFilter) {
+        this.studentFilter = studentFilter
+    }
+
     override fun getKNStudentShortList(k: Int, n: Int):  Data_list_student_short {
         val page = n
         val pageSize = k
         if (this.studentFilter != null) {
-            return Data_list_student_short(getFilteredStudentList(page = pageSize, pageSize = pageSize, studentFilter!!), 1)
+            SimpleLogger.info("Фильтруем по студентам с параметрами: ${this.studentFilter}")
+            return Data_list_student_short(getFilteredStudentList(page = page, pageSize = pageSize, studentFilter!!), 1)
         }
         val offset = (page - 1) * pageSize
         val query = "SELECT * FROM student ORDER BY id LIMIT $pageSize OFFSET $offset"
@@ -76,6 +82,7 @@ class Student_list_DB(
         var query = "SELECT * FROM student "
         query += buildFilterQuery(studentFilter)
         query += " ORDER BY id LIMIT $pageSize OFFSET $offset"
+        SimpleLogger.info("Выполнение запроса: $query")
 
         val studentList: MutableList<Student> = ArrayList()
         try {
